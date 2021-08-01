@@ -2,10 +2,12 @@ package com.example.vinayaksapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -41,6 +43,8 @@ public class Details extends AppCompatActivity {
         video1 = findViewById(R.id.video_view);
         mediaController = new MediaController(this);
         storage = FirebaseStorage.getInstance();
+        ScrollView sv = (ScrollView) findViewById(R.id.scrl);
+        sv.smoothScrollTo(0, 0);
 
 
         String name = getIntent().getStringExtra("name");
@@ -55,26 +59,55 @@ public class Details extends AppCompatActivity {
         video1.start();
 
 
-        name1.setText("NAME: " + name);
+
+        name1.setText("NAME: " + name.toUpperCase());
         age1.setText("AGE: " + age);
         phNo1.setText("Phone No: " + phNo);
         gender1.setText("Gender: " + gender);
         emailId1.setText("Email ID: " + emailId);
 
+
+
+        name1.setText("NAME: " + name);
+        age1.setText("AGE: " + age);
+        phNo1.setText("Phone No: " + phNo);
+        gender1.setText("Gender: " + gender);
+        emailId1.setText("Email ID: " + emailId);
+        video1.setVideoPath(videoUri);
+
         Uri myUriimage = Uri.parse(imageUri);
         Glide.with(Details.this).load(myUriimage).into(photo1);
-        final File localFile;
-        try {
-            localFile = File.createTempFile("userIntro", "3gp");
-            StorageReference reference = storage.getReference().child("Videos");
+//        final File localFile;
+//        try {
+//            localFile = File.createTempFile("userIntro", "3gp");
+//            StorageReference reference = storage.getReference().child("Videos");
+//
+//            reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+//
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-            reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-                video1.setVideoPath(videoUri);
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+
+
+
+//        Uri myUriimage = Uri.parse(imageUri);
+//        Glide.with(Details.this).load(myUriimage).into(photo1);
+//        final File localFile;
+//        try {
+//            localFile = File.createTempFile("userIntro", "3gp");
+//            StorageReference reference = storage.getReference().child("Videos");
+//
+//            reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+//                video1.setVideoPath(videoUri);
+//
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
 
     }
 }

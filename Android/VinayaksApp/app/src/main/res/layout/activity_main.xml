@@ -62,7 +62,7 @@
         android:id="@+id/addphoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Take From gallery"
+        android:text="Capture an Image"
         android:textSize="20sp"
         />
     <TextView
@@ -75,14 +75,14 @@
         android:id="@+id/shootvideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shoot Video"
+        android:text="Shoot A Video"
         android:textSize="20sp"
         />
     <Button
         android:id="@+id/addvideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Video"
+        android:text="Add A Video"
         android:textSize="20sp"
         />
     <TextView

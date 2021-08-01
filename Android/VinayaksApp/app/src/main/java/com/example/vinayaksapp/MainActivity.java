@@ -9,6 +9,7 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -48,12 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private FirebaseDatabase database;
     private String TAG = "fafa";
-    private String videoUrltofirebase;
-    private String imageUrltofirebase;
+    private String videoUrltofirebase = "";
+    private String imageUrltofirebase = "";
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
     public static final int GALLERY_REQUEST_CODE = 105;
-    ;
+    ProgressDialog dialog;
+
 
 
     Uri picUri;
@@ -134,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.gender.setError("Please Enter the name");
                 return;
             }
+
+            if (imageUrltofirebase.isEmpty()) {
+                Toast.makeText(this, "Capture a image", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (videoUrltofirebase.isEmpty()) {
+                Toast.makeText(this, "Shoot a video and upload it", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             User obj1 = new User(name, phNo, email, age, gender, imageUrltofirebase, videoUrltofirebase);
             database.getReference().child("users").push().setValue(obj1).addOnSuccessListener(aVoid -> {
                 MainActivity.this.name.getText().clear();
@@ -141,7 +153,11 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.age.getText().clear();
                 MainActivity.this.gender.getText().clear();
                 MainActivity.this.email.getText().clear();
+                imageUrltofirebase = "";
+                videoUrltofirebase = "";
             });
+
+
         });
 
 
@@ -239,10 +255,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == REQUEST_CAPTURE_VIDEO) {
+            dialog=new ProgressDialog(this);
+            dialog.setMessage("Uploading video");
+            dialog.setCancelable(false);
+            dialog.show();
 
             if (data != null) {
                 if (data.getData() != null) {
+
                     Calendar calendar = Calendar.getInstance();
 
                     videoUri = data.getData();
@@ -257,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             videoUrltofirebase = uri.toString();
+                                            dialog.dismiss();
 
                                             Toast.makeText(MainActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                                         }
@@ -279,6 +302,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         } else if (requestCode == CAMERA_REQUEST_CODE) {
+
+            dialog=new ProgressDialog(this);
+            dialog.setMessage("Uploading Image");
+            dialog.setCancelable(false);
+            dialog.show();
             if (resultCode == Activity.RESULT_OK) {
                 File f = new File(currentPhotoPath);
                 picUri = Uri.fromFile(f);
@@ -300,6 +328,7 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         imageUrltofirebase = uri.toString();
+                                        dialog.dismiss();
 //                                    imageUrl=uri.toString();
 //                                    database.getReference().child("Images").push().setValue(imageUrl);
                                         Log.d("fafa", uri.toString());

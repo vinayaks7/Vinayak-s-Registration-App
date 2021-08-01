@@ -17,15 +17,14 @@ public class SelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
 
-        adminbutton=findViewById(R.id.adminbutton);
-        usersbutton=findViewById(R.id.usersbutton);
-
+        adminbutton = findViewById(R.id.adminbutton);
+        usersbutton = findViewById(R.id.usersbutton);
 
 
         adminbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(SelectionActivity.this,Password.class);
+                Intent intent = new Intent(SelectionActivity.this, Password.class);
                 startActivity(intent);
                 finish();
             }
@@ -34,12 +33,11 @@ public class SelectionActivity extends AppCompatActivity {
         usersbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(SelectionActivity.this,MainActivity.class);
+                Intent intent = new Intent(SelectionActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-
 
 
     }

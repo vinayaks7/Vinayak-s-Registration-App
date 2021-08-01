@@ -32,26 +32,24 @@ public class Details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        name1=findViewById(R.id.name);
-        emailId1=findViewById(R.id.email);
-        phNo1=findViewById(R.id.phoneNo);
-        age1=findViewById(R.id.age);
-        gender1=findViewById(R.id.gender);
-        photo1=findViewById(R.id.image);
-        video1=findViewById(R.id.video_view);
+        name1 = findViewById(R.id.name);
+        emailId1 = findViewById(R.id.email);
+        phNo1 = findViewById(R.id.phoneNo);
+        age1 = findViewById(R.id.age);
+        gender1 = findViewById(R.id.gender);
+        photo1 = findViewById(R.id.image);
+        video1 = findViewById(R.id.video_view);
         mediaController = new MediaController(this);
-        storage=FirebaseStorage.getInstance();
+        storage = FirebaseStorage.getInstance();
 
 
-
-
-        String name=getIntent().getStringExtra("name");
-        String age=getIntent().getStringExtra("age");
-        String phNo=getIntent().getStringExtra("phoneNo");
-        String gender=getIntent().getStringExtra("gender");
-        String emailId=getIntent().getStringExtra("emailId");
-        String imageUri=getIntent().getStringExtra("imageUri");
-        String videoUri=getIntent().getStringExtra("videoUri");
+        String name = getIntent().getStringExtra("name");
+        String age = getIntent().getStringExtra("age");
+        String phNo = getIntent().getStringExtra("phoneNo");
+        String gender = getIntent().getStringExtra("gender");
+        String emailId = getIntent().getStringExtra("emailId");
+        String imageUri = getIntent().getStringExtra("imageUri");
+        String videoUri = getIntent().getStringExtra("videoUri");
         video1.setMediaController(mediaController);
         mediaController.setAnchorView(video1);
         video1.start();
@@ -67,7 +65,7 @@ public class Details extends AppCompatActivity {
         Glide.with(Details.this).load(myUriimage).into(photo1);
         final File localFile;
         try {
-            localFile = File.createTempFile("userIntro","3gp");
+            localFile = File.createTempFile("userIntro", "3gp");
             StorageReference reference = storage.getReference().child("Videos");
 
             reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
@@ -76,12 +74,6 @@ public class Details extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-
 
 
     }

@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.gender.setError("Please Enter the name");
                 return;
             }
-            User obj1 = new User(name, phNo, email, age, gender,imageUrltofirebase, videoUrltofirebase );
+            User obj1 = new User(name, phNo, email, age, gender, imageUrltofirebase, videoUrltofirebase);
             database.getReference().child("users").push().setValue(obj1).addOnSuccessListener(aVoid -> {
                 MainActivity.this.name.getText().clear();
                 MainActivity.this.phNo.getText().clear();
@@ -145,28 +145,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     private void askCameraPermission() {
 
-        if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
-        }else {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        } else {
 
             dispatchTakePictureIntent();
         }
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == CAMERA_PERM_CODE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == CAMERA_PERM_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                dispatchTakePictureIntent();
-            }else {
+            } else {
                 Toast.makeText(this, "Camera Permission is Required to Use camera.", Toast.LENGTH_SHORT).show();
             }
         }
@@ -191,12 +189,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     String currentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        Log.d(TAG,"Inside currentPath");
+        Log.d(TAG, "Inside currentPath");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -212,10 +209,6 @@ public class MainActivity extends AppCompatActivity {
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
-
-
-
 
 
     private void dispatchTakePictureIntent() {
@@ -250,12 +243,12 @@ public class MainActivity extends AppCompatActivity {
 
             if (data != null) {
                 if (data.getData() != null) {
-                    Calendar calendar=Calendar.getInstance();
+                    Calendar calendar = Calendar.getInstance();
 
                     videoUri = data.getData();
 
                     if (videoUri != null) {
-                        StorageReference reference = storage.getReference().child("Videos").child(calendar.getTimeInMillis()+"");
+                        StorageReference reference = storage.getReference().child("Videos").child(calendar.getTimeInMillis() + "");
                         reference.putFile(videoUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -285,51 +278,58 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        }
-        else if(requestCode==CAMERA_REQUEST_CODE){
-            if(resultCode== Activity.RESULT_OK){
-                File f=new File(currentPhotoPath);
-                picUri=Uri.fromFile(f);
-                Log.d(TAG,Uri.fromFile(f).toString());
+        } else if (requestCode == CAMERA_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                File f = new File(currentPhotoPath);
+                picUri = Uri.fromFile(f);
+                Log.d(TAG, Uri.fromFile(f).toString());
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
-                Calendar calendar=Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
 
-                if(contentUri!=null){
-                    StorageReference reference=storage.getReference().child("Images").child(calendar.getTimeInMillis()+"");
+                if (contentUri != null) {
+                    StorageReference reference = storage.getReference().child("Images").child(calendar.getTimeInMillis() + "");
                     reference.putFile(contentUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        imageUrltofirebase=uri.toString();
+                                        imageUrltofirebase = uri.toString();
 //                                    imageUrl=uri.toString();
 //                                    database.getReference().child("Images").push().setValue(imageUrl);
-                                        Log.d("fafa",uri.toString());
+                                        Log.d("fafa", uri.toString());
                                         Toast.makeText(MainActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
                                     }
                                 });
 
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(MainActivity.this, "Task failed", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
 
-                }
-                else{
+                } else {
                     Toast.makeText(this, "FilePath is null", Toast.LENGTH_SHORT).show();
                 }
             }
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MainActivity.this, SelectionActivity.class);
+        startActivity(intent);
+        finishAffinity();
+
+
+    }
+
 
 }

@@ -11,6 +11,9 @@ public class User {
     String videoUri;
 
 
+    public User() {
+    }
+
     public User(String name, String phoneNo, String emailid, String age, String gender, String imageUri, String videoUri) {
         this.name = name;
         this.phoneNo = phoneNo;

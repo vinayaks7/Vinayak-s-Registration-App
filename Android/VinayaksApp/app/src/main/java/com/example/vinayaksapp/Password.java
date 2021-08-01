@@ -27,7 +27,12 @@ public class Password extends AppCompatActivity {
             public void onClick(View v) {
                 String pass=password.getText().toString();
                 if(pass.equals("123")){
-
+                    Intent intent=new Intent(Password.this,Admin.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(Password.this, "Password not correct", Toast.LENGTH_SHORT).show();
                 }
 
             }

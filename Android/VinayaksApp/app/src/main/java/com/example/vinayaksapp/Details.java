@@ -55,11 +55,11 @@ public class Details extends AppCompatActivity {
         video1.start();
 
 
-        name1.setText(name);
-        age1.setText(age);
-        phNo1.setText(phNo);
-        gender1.setText(gender);
-        emailId1.setText(emailId);
+        name1.setText("NAME: " + name);
+        age1.setText("AGE: " + age);
+        phNo1.setText("Phone No: " + phNo);
+        gender1.setText("Gender: " + gender);
+        emailId1.setText("Email ID: " + emailId);
 
         Uri myUriimage = Uri.parse(imageUri);
         Glide.with(Details.this).load(myUriimage).into(photo1);

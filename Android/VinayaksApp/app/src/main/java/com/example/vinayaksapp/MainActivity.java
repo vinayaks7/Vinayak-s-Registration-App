@@ -105,6 +105,49 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        onSubmit.setOnClickListener(v -> {
+            String name = MainActivity.this.name.getText().toString();
+            String phNo = MainActivity.this.phNo.getText().toString();
+            String email = MainActivity.this.email.getText().toString();
+            String age = MainActivity.this.age.getText().toString();
+            String gender = MainActivity.this.gender.getText().toString();
+
+            if (name.isEmpty()) {
+                MainActivity.this.name.setError("Please Enter the name");
+                return;
+            }
+
+            if (phNo.isEmpty()) {
+                MainActivity.this.phNo.setError("Please Enter the name");
+                return;
+            }
+            if (email.isEmpty()) {
+                MainActivity.this.email.setError("Please Enter the name");
+                return;
+            }
+            if (age.isEmpty()) {
+                MainActivity.this.age.setError("Please Enter the name");
+                return;
+            }
+            if (gender.isEmpty()) {
+                MainActivity.this.gender.setError("Please Enter the name");
+                return;
+            }
+            User obj1 = new User(name, phNo, email, age, gender,imageUrltofirebase, videoUrltofirebase );
+            database.getReference().child("users").push().setValue(obj1).addOnSuccessListener(aVoid -> {
+                MainActivity.this.name.getText().clear();
+                MainActivity.this.phNo.getText().clear();
+                MainActivity.this.age.getText().clear();
+                MainActivity.this.gender.getText().clear();
+                MainActivity.this.email.getText().clear();
+            });
+        });
+
+
+
+
+
     }
 
     private void askCameraPermission() {
@@ -207,11 +250,12 @@ public class MainActivity extends AppCompatActivity {
 
             if (data != null) {
                 if (data.getData() != null) {
+                    Calendar calendar=Calendar.getInstance();
 
                     videoUri = data.getData();
 
                     if (videoUri != null) {
-                        StorageReference reference = storage.getReference().child("Videos");
+                        StorageReference reference = storage.getReference().child("Videos").child(calendar.getTimeInMillis()+"");
                         reference.putFile(videoUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -263,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
                                 reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
+                                        imageUrltofirebase=uri.toString();
 //                                    imageUrl=uri.toString();
 //                                    database.getReference().child("Images").push().setValue(imageUrl);
                                         Log.d("fafa",uri.toString());
